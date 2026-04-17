@@ -1,0 +1,10 @@
+[package]
+name = "program"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+openvm = { git = "https://github.com/openvm-org/openvm.git", tag = "v1.5.0", features = ["std"] }
+openvm-sha2 = { git = "https://github.com/openvm-org/openvm.git", tag = "v1.5.0" }
+hex = { version = "0.4.3" }
+
