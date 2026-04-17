@@ -6,5 +6,7 @@ fn main() {
         .iter()
         .map(|x| Sha256::hash(x.as_bytes()))
         .collect();
-    let _merkle_tree = MerkleTree::<Sha256>::from_leaves(&leaves);
+    let merkle_tree = MerkleTree::<Sha256>::from_leaves(&leaves);
+
+    println!("root {:?}", merkle_tree.root());
 }

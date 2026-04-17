@@ -1,0 +1,4 @@
+- figure out how to pass in Merkle Tree into program
+- figure out if `rs_merkle` can run in program
+- run Merkle proof verification within program
+- add mock deposit function (i.e. insert leaf into tree) for testing

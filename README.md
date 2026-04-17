@@ -33,6 +33,14 @@ cargo openvm build --manifest-path program/Cargo.toml
 
 ## Running
 
+### Prover
+
+```rust
+cargo run -p prover
+```
+
+### Program only
+
 ```rust
 cargo openvm run --package program --input program/inputs.json --config program/openvm.toml
 ```
