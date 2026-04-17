@@ -1,4 +1,3 @@
-// src/main.rs
 use openvm::io::{read, reveal_bytes32};
 use openvm_sha2::sha256;
 
