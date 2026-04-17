@@ -1,6 +1,11 @@
 # Hurricane Money
+*No LLM was used in the writing of this code, other than for knowledge assistance*
 
 This project aims to be a basic implementation of [Tornado Cash](https://github.com/tornadocash/tornado-core) using [OpenVM](https://docs.openvm.dev/book/getting-started/introduction) for all ZK proof related parts.
+
+## Installation
+
+[OpenVM - Install](https://docs.openvm.dev/book/getting-started/install)
 
 ## Building 
 
@@ -26,3 +31,4 @@ cargo openvm prove app --input inputs.json
 ```rust
 cargo openvm verify app
 ```
+
