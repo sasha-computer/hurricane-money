@@ -7,10 +7,10 @@ This project aims to be a basic implementation of [Tornado Cash](https://github.
 
 There are two important packages here:
 
-1. [Program](./program/)
-2. [Prover](./prover/)
+1. [Guest](./guest/)
+2. [Host](./host/)
 
-*Program* covers the program that is proven i.e. in pseudo-code:
+*Guest* covers the program that is proven, on withdrawal, i.e. in pseudo-code:
 
 ```rust
 merkle_proof = generate_merkle_proof(merkle_tree, leaf)
@@ -19,7 +19,7 @@ process_merkle_proof(merkle_proof, hash(concat(k, r))) == root
 
 where *k*, and *r*, are the *nullifier* and *randomness* respectively, *root* is the root hash of the Merkle tree. This pseudo-code is modified from this explainer: [How Tornado Cash Works (Line by Line for Devs) - RareSkills](https://web.archive.org/web/0/https://rareskills.io/post/how-does-tornado-cash-work).
 
-*Prover* uses the [OpenVM SDK](https://docs.openvm.dev/book/advanced-usage/sdk) to do everything else i.e. generate the whole Merkle tree structure and pass it into the [program](./program/src/main.rs) for proving.
+*Host* uses the [OpenVM SDK](https://docs.openvm.dev/book/advanced-usage/sdk) to do everything else i.e. generate the whole Merkle tree structure and pass it into the [guest](./guest/src/main.rs) for proving. It also handles non-ZK user operations like deposit preparation (sampling `k`, `r`, and computing the commitment to send on-chain).
 
 ## Installation
 
@@ -28,28 +28,28 @@ where *k*, and *r*, are the *nullifier* and *randomness* respectively, *root* is
 ## Building 
 
 ```rust
-cargo openvm build --manifest-path program/Cargo.toml
+cargo openvm build --manifest-path guest/Cargo.toml
 ```
 
 ## Running
 
-### Prover
+### Host
 
 ```rust
-cargo run -p prover
+cargo run -p host
 ```
 
-### Program only
+### Guest only
 
 ```rust
-cargo openvm run --package program --input program/inputs.json --config program/openvm.toml
+cargo openvm run --package guest --input guest/inputs.json --config guest/openvm.toml
 ```
 
 ## Generating Proof
 
 ```rust
-cargo openvm keygen --config program/openvm.toml
-cargo openvm prove app --config program/openvm.toml --bin program --input program/inputs.json
+cargo openvm keygen --config guest/openvm.toml
+cargo openvm prove app --config guest/openvm.toml --bin guest --input guest/inputs.json
 ```
 
 ## Verifying Proof

@@ -1,3 +1,10 @@
+/* 
+computation we're aiming for:
+processMerkleProof(MerkleProof, leaf) == root 
+
+where leaf = hash(concat(k, r))
+*/
+
 use openvm::io::{read, reveal_bytes32};
 use openvm_sha2::sha256;
 

@@ -1,0 +1,17 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["dependencies"]
+remappings = [
+    "@openzeppelin/contracts=dependencies/@openzeppelin-contracts-5.6.1/",
+    "forge-std/=dependencies/forge-std-1.15.0/"
+]
+
+[soldeer]
+remappings_location = "config"
+
+[dependencies]
+forge-std = "1.15.0"
+"@openzeppelin-contracts" = "5.6.1"
+
+

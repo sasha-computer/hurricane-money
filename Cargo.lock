@@ -1083,6 +1083,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "guest"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "openvm",
+ "openvm-sha2",
+]
+
+[[package]]
 name = "halo2"
 version = "0.1.0-beta.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1190,6 +1199,16 @@ name = "hex-literal"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6fe2267d4ed49bc07b63801559be28c718ea06c4738b7a03c94df7386d2cde46"
+
+[[package]]
+name = "host"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "openvm-build",
+ "openvm-sdk",
+ "rs_merkle",
+]
 
 [[package]]
 name = "iana-time-zone"
@@ -2983,25 +3002,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "program"
-version = "0.1.0"
-dependencies = [
- "hex",
- "openvm",
- "openvm-sha2",
-]
-
-[[package]]
-name = "prover"
-version = "0.1.0"
-dependencies = [
- "hex",
- "openvm-build",
- "openvm-sdk",
- "rs_merkle",
 ]
 
 [[package]]
