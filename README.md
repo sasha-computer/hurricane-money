@@ -1,5 +1,18 @@
 # Hurricane Money
-*No LLM was used in the writing of this code, other than for knowledge assistance*
+
+> **⚠️ EDUCATIONAL PROJECT DISCLAIMER ⚠️**
+>
+> This is an **educational and research project only**, created to understand zero-knowledge proofs, Merkle trees, and blockchain privacy technology. It is **NOT intended for production use**, actual fund mixing, or circumventing any laws or regulations.
+>
+> - This code is unaudited, incomplete, and likely contains bugs
+> - The authors provide no warranties and assume no liability for any use
+> - Users are solely responsible for complying with all applicable laws in their jurisdiction
+> - Privacy technologies may be subject to regulatory scrutiny; consult legal counsel before use
+
+
+> **⚠️ AI DISCLAIMER ⚠️**
+>
+> I wrote all code by hand. I used AI for knowledge search, similar to Stack Overflow back in the day. The aim here is to be intentional and take my time to fully understand the stack and its constituent parts. Thanks for reading!
 
 ## Overview
 
