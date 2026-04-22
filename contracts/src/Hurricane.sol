@@ -39,5 +39,8 @@ contract Hurricane {
         root = newRoot;
     }
 
+    // accepts openVM proof of `processMerkleProof(MerkleProof, leaf(hash(concat(k,r)))`
+    // verifies it
+    // also should accept
     // function withdraw() public {}
 }
