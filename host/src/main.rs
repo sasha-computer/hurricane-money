@@ -1,7 +1,7 @@
 use alloy::{
     network::EthereumWallet,
     node_bindings::{Anvil, AnvilInstance},
-    primitives::B256,
+    primitives::{utils::parse_ether, B256},
     providers::{ext::AnvilApi, Provider, ProviderBuilder},
     rpc::types::anvil::NodeInfo,
     signers::local::PrivateKeySigner,
@@ -20,13 +20,32 @@ sol!(
 #[tokio::main]
 async fn main() -> Result<()> {
     let (_anvil, provider, _info) = spawn_anvil().await?;
-    let _commitment: B256 = deposit::generate_commitment();
-    deploy_hurricane(&provider).await?;
+
+    let hurricane = Hurricane::deploy(provider.clone()).await?;
+    println!("deployed at {}", hurricane.address());
+
+    get_contract_root(&hurricane).await?;
+    // TODO: want to assert that root at deployment is correct via rs-merkle crate
+
+    let commitment: B256 = deposit::generate_commitment();
+
+    let receipt = hurricane
+        .deposit(commitment)
+        .value(parse_ether("1")?)
+        .send()
+        .await?
+        .get_receipt()
+        .await?;
+
+    println!("deposit tx: {}", receipt.transaction_hash);
+    println!("block: {:?}", receipt.block_number.unwrap());
+
+    get_contract_root(&hurricane).await?;
 
     Ok(())
 }
 
-async fn spawn_anvil() -> Result<(AnvilInstance, impl Provider, NodeInfo)> {
+async fn spawn_anvil() -> Result<(AnvilInstance, impl Provider + Clone, NodeInfo)> {
     let anvil = Anvil::new().block_time(1).chain_id(1337).try_spawn()?;
     let signer: PrivateKeySigner = anvil.keys()[0].clone().into();
     let wallet = EthereumWallet::from(signer);
@@ -43,8 +62,10 @@ async fn spawn_anvil() -> Result<(AnvilInstance, impl Provider, NodeInfo)> {
     Ok((anvil, provider, info))
 }
 
-async fn deploy_hurricane(provider: &impl Provider) -> Result<()> {
-    let hurricane = Hurricane::deploy(&provider).await?;
-    println!("deployed at {}", hurricane.address());
+async fn get_contract_root(
+    hurricane: &Hurricane::HurricaneInstance<impl Provider + Clone>,
+) -> Result<()> {
+    let root = hurricane.root().call().await?;
+    println!("current root: {root}");
     Ok(())
 }
