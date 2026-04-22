@@ -18,7 +18,7 @@ pub fn generate_commitment() -> B256 {
 
     println!("k: 0x{}", hex::encode(k));
     println!("r: 0x{}", hex::encode(r));
-    println!("c: 0x{}", hex::encode(c));
+    println!("c: 0x{}", hex::encode(commitment));
 
     commitment
 }
