@@ -1,4 +1,1 @@
-- figure out how to pass in Merkle Proof bytes into guest
-- run Merkle proof verification within guest
-- add mock deposit function (i.e. insert leaf into tree) for testing
-- add deposit subcommand to host: sample k, r, compute commitment = H(k, r), print for on-chain submission
+- set up Anvil testing to call deposit function on Hurricane.sol
