@@ -1,46 +1,25 @@
 use alloy::{
     network::EthereumWallet,
     node_bindings::{Anvil, AnvilInstance},
-    primitives::{utils::parse_ether, B256},
     providers::{ext::AnvilApi, Provider, ProviderBuilder},
     rpc::types::anvil::NodeInfo,
     signers::local::PrivateKeySigner,
-    sol,
 };
 use eyre::Result;
 
+mod contract;
+use contract::Hurricane;
 mod deposit;
-
-sol!(
-    #[sol(rpc)]
-    Hurricane,
-    "../contracts/out/Hurricane.sol/Hurricane.json"
-);
+mod withdraw;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let (_anvil, provider, _info) = spawn_anvil().await?;
+    let hurricane = deploy_hurricane(provider).await?;
+    let note = deposit::new()?;
+    let _tx_receipt = deposit::submit(&hurricane, &note).await?;
 
-    let hurricane = Hurricane::deploy(provider.clone()).await?;
-    println!("deployed at {}", hurricane.address());
-
-    get_contract_root(&hurricane).await?;
-    // TODO: want to assert that root at deployment is correct via rs-merkle crate
-
-    let commitment: B256 = deposit::generate_commitment();
-
-    let receipt = hurricane
-        .deposit(commitment)
-        .value(parse_ether("1")?)
-        .send()
-        .await?
-        .get_receipt()
-        .await?;
-
-    println!("deposit tx: {}", receipt.transaction_hash);
-    println!("block: {:?}", receipt.block_number.unwrap());
-
-    get_contract_root(&hurricane).await?;
+    get_contract_root(&hurricane, "merkle root after deposit").await?;
 
     Ok(())
 }
@@ -57,15 +36,30 @@ async fn spawn_anvil() -> Result<(AnvilInstance, impl Provider + Clone, NodeInfo
     assert_eq!(info.environment.chain_id, 1337);
     assert_eq!(info.fork_config.fork_url, None);
 
-    println!("Node info: {info:#?}");
+    println! {"anvil spawned!"};
+    println!("chain_id: {}", info.environment.chain_id);
+    println!("rpc: {}", anvil.endpoint_url());
+    println!("block: {}", info.current_block_number);
+    println!("---");
 
     Ok((anvil, provider, info))
 }
 
+async fn deploy_hurricane(
+    provider: impl Provider + Clone,
+) -> Result<Hurricane::HurricaneInstance<impl Provider + Clone>> {
+    let hurricane = Hurricane::deploy(provider.clone()).await?;
+    println!("deployed at {}", hurricane.address());
+    get_contract_root(&hurricane, "merkle root at deployment").await?;
+    println!("---");
+    Ok(hurricane)
+}
+
 async fn get_contract_root(
     hurricane: &Hurricane::HurricaneInstance<impl Provider + Clone>,
+    label: &str,
 ) -> Result<()> {
     let root = hurricane.root().call().await?;
-    println!("current root: {root}");
+    println!("{label} : {root}");
     Ok(())
 }
