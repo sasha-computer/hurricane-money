@@ -20,6 +20,7 @@ async fn main() -> Result<()> {
     let _tx_receipt = deposit::submit(&hurricane, &note).await?;
     get_contract_root(&hurricane, "merkle root after deposit").await?;
 
+    println!("---");
     withdraw::run_program(&note)?;
 
     Ok(())

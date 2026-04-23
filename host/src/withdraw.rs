@@ -23,7 +23,7 @@ pub fn run_program(note: &Note) -> Result<()> {
     stdin.write(&note.r);
 
     let output = sdk.execute(elf.clone(), stdin.clone())?;
-    println!("public values output: {output:?}");
+    println!("public values output: 0x{}", hex::encode(&output));
 
     Ok(())
 }

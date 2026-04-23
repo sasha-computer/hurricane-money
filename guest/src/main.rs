@@ -9,10 +9,10 @@ use openvm::io::{read, reveal_bytes32};
 use openvm_keccak256::keccak256;
 
 fn main() {
-    let k: u8 = read();
-    let r: u8 = read();
+    let k: [u8; 32] = read();
+    let r: [u8; 32] = read();
 
-    let c: [u8; 32] = keccak256(&[k, r]);
+    let c: [u8; 32] = keccak256(&[k, r].concat());
 
     reveal_bytes32(c)
 }
