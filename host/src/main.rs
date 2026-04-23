@@ -18,8 +18,9 @@ async fn main() -> Result<()> {
     let hurricane = deploy_hurricane(provider).await?;
     let note = deposit::new()?;
     let _tx_receipt = deposit::submit(&hurricane, &note).await?;
-
     get_contract_root(&hurricane, "merkle root after deposit").await?;
+
+    withdraw::run_program(&note)?;
 
     Ok(())
 }

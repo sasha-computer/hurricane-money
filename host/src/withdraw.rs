@@ -8,7 +8,7 @@ use openvm_build::GuestOptions;
 use openvm_sdk::{config::SdkVmConfig, Sdk, StdIn};
 use std::path::PathBuf;
 
-pub fn run_program(note: &Note) -> Result<[u8; 32]> {
+pub fn run_program(note: &Note) -> Result<()> {
     let sdk = Sdk::new(SdkVmConfig::from_toml(include_str!(
         "../../guest/openvm.toml"
     ))?)?;
@@ -25,5 +25,5 @@ pub fn run_program(note: &Note) -> Result<[u8; 32]> {
     let output = sdk.execute(elf.clone(), stdin.clone())?;
     println!("public values output: {output:?}");
 
-    Ok([0u8; 32])
+    Ok(())
 }
